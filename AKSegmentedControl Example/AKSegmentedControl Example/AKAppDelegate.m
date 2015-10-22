@@ -310,12 +310,33 @@
 {
     AKSegmentedControl *segmentedControl = (AKSegmentedControl *)sender;
     
-    if (segmentedControl == segmentedControl1)
+    if (segmentedControl == segmentedControl1) {
         NSLog(@"SegmentedControl #1 : Selected Index %@", [segmentedControl selectedIndexes]);
-    else if (segmentedControl == segmentedControl2)
+        [segmentedControl insertButton:[self newButton] atIndex:0];
+    } else if (segmentedControl == segmentedControl2) {
         NSLog(@"SegmentedControl #2 : Selected Index %@", [segmentedControl selectedIndexes]);
-    else if (segmentedControl == segmentedControl3)
+    } else if (segmentedControl == segmentedControl3) {
         NSLog(@"SegmentedControl #3 : Selected Index %@", [segmentedControl selectedIndexes]);
+    }
+}
+
+- (UIButton *) newButton
+{
+  UIImage *buttonBackgroundImagePressedLeft = [[UIImage imageNamed:@"segmented-bg-pressed-left.png"]
+                                               resizableImageWithCapInsets:UIEdgeInsetsMake(0.0, 4.0, 0.0, 1.0)];
+
+  UIButton *buttonSocial = [[UIButton alloc] init];
+  UIImage *buttonSocialImageNormal = [UIImage imageNamed:@"social-icon.png"];
+  
+  [buttonSocial setImageEdgeInsets:UIEdgeInsetsMake(0.0, 0.0, 0.0, 5.0)];
+  [buttonSocial setBackgroundImage:buttonBackgroundImagePressedLeft forState:UIControlStateHighlighted];
+  [buttonSocial setBackgroundImage:buttonBackgroundImagePressedLeft forState:UIControlStateSelected];
+  [buttonSocial setBackgroundImage:buttonBackgroundImagePressedLeft forState:(UIControlStateHighlighted|UIControlStateSelected)];
+  [buttonSocial setImage:buttonSocialImageNormal forState:UIControlStateNormal];
+  [buttonSocial setImage:buttonSocialImageNormal forState:UIControlStateSelected];
+  [buttonSocial setImage:buttonSocialImageNormal forState:UIControlStateHighlighted];
+  [buttonSocial setImage:buttonSocialImageNormal forState:(UIControlStateHighlighted|UIControlStateSelected)];
+  return buttonSocial;
 }
 
 @end

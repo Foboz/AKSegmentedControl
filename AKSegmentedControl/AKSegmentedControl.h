@@ -71,4 +71,6 @@ typedef NS_ENUM(NSUInteger, AKSegmentedControlMode) {
  */
 - (void)setSelectedIndexes:(NSIndexSet *)indexSet byExpandingSelection:(BOOL)expandSelection;
 
+- (void)insertButton:(UIButton *)button atIndex:(NSUInteger)index;
+
 @end

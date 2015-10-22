@@ -187,6 +187,35 @@ static CGFloat const kAKButtonSeparatorWidth = 1.0;
     [self updateButtons];
 }
 
+- (void)insertButton:(UIButton *)button atIndex:(NSUInteger)index
+{
+  NSMutableArray *buttons = [_buttonsArray mutableCopy];
+  [buttons insertObject:button atIndex:index];
+  _buttonsArray = [buttons copy];
+  [self addSubview:button];
+  if (_segmentedControlMode == AKSegmentedControlModeSticky) {
+    [button addTarget:self action:@selector(segmentButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    button.exclusiveTouch = YES;
+  } else {
+    [button addTarget:self action:@selector(segmentButtonPressed:) forControlEvents:UIControlEventTouchDown];
+  }
+  [_buttonsArray enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {
+    [button setTag:idx];
+  }];
+  NSMutableIndexSet *set = [[NSMutableIndexSet alloc] init];
+  [_selectedIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+    if (idx > index) {
+      [set addIndex:++idx];
+    } else {
+      [set addIndex:idx];
+    }
+  }];
+  _selectedIndexes = [set copy];
+  
+  [self rebuildSeparators];
+  [self updateButtons];
+}
+
 - (void)setSeparatorImage:(UIImage *)separatorImage {
     _separatorImage = separatorImage;
     [self rebuildSeparators];
