@@ -312,7 +312,10 @@
     
     if (segmentedControl == segmentedControl1) {
         NSLog(@"SegmentedControl #1 : Selected Index %@", [segmentedControl selectedIndexes]);
-        [segmentedControl insertButton:[self newButton] atIndex:0];
+      [segmentedControl insertButton:[self newButton] atIndex:0];
+      [UIView animateWithDuration:0.5 animations:^{
+        [segmentedControl layoutIfNeeded];
+      }];
     } else if (segmentedControl == segmentedControl2) {
         NSLog(@"SegmentedControl #2 : Selected Index %@", [segmentedControl selectedIndexes]);
     } else if (segmentedControl == segmentedControl3) {
