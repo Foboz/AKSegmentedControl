@@ -87,33 +87,35 @@
   } else {
     _buttonsConstraints = [[NSMutableArray alloc] initWithCapacity:0];
   }
-  NSMutableString *horizontalFormat = [[NSMutableString alloc] init];
-  NSMutableDictionary *views = [[NSMutableDictionary alloc] initWithCapacity:[_buttonsArray count] + [_separatorsArray count]];
-  NSDictionary *metrics = @{@"TOP": @(_contentEdgeInsets.top),
-                            @"LEFT": @(_contentEdgeInsets.left),
-                            @"BOTTOM": @(_contentEdgeInsets.bottom),
-                            @"RIGHT": @(_contentEdgeInsets.right),
-                            @"SEPARATOR_WIDTH": @(_separatorImage.size.width)};
-  [_buttonsArray enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {
-    button.translatesAutoresizingMaskIntoConstraints = NO;
-    views[[NSString stringWithFormat:@"button%tu", idx]] = button;
-    NSString *format = [NSString stringWithFormat:@"V:|-(TOP)-[button%tu]-(BOTTOM)-|", idx];
-    [_buttonsConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:format options:0 metrics:metrics views:views]];
-    if (idx == 0) {
-      [horizontalFormat appendFormat:@"H:|-(LEFT)-[button%tu]", idx];
-    } else {
-      [horizontalFormat appendFormat:@"[separator%tu(==SEPARATOR_WIDTH)][button%tu(==button%tu)]", idx-1, idx, idx-1];
-    }
-  }];
-  [_separatorsArray enumerateObjectsUsingBlock:^(UIImageView *obj, NSUInteger idx, BOOL *stop) {
-    obj.translatesAutoresizingMaskIntoConstraints = NO;
-    views[[NSString stringWithFormat:@"separator%tu", idx]] = obj;
-    NSString *format = [NSString stringWithFormat:@"V:|-(TOP)-[separator%tu]-(BOTTOM)-|", idx];
-    [_buttonsConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:format options:0 metrics:metrics views:views]];
-  }];
-  [horizontalFormat appendString:@"-(RIGHT)-|"];
-  [_buttonsConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:horizontalFormat options:0 metrics:metrics views:views]];
-  [self addConstraints:_buttonsConstraints];
+  if ([_buttonsArray count] > 0) {
+    NSMutableString *horizontalFormat = [[NSMutableString alloc] init];
+    NSMutableDictionary *views = [[NSMutableDictionary alloc] initWithCapacity:[_buttonsArray count] + [_separatorsArray count]];
+    NSDictionary *metrics = @{@"TOP": @(_contentEdgeInsets.top),
+                              @"LEFT": @(_contentEdgeInsets.left),
+                              @"BOTTOM": @(_contentEdgeInsets.bottom),
+                              @"RIGHT": @(_contentEdgeInsets.right),
+                              @"SEPARATOR_WIDTH": @(_separatorImage.size.width)};
+    [_buttonsArray enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {
+      button.translatesAutoresizingMaskIntoConstraints = NO;
+      views[[NSString stringWithFormat:@"button%tu", idx]] = button;
+      NSString *format = [NSString stringWithFormat:@"V:|-(TOP)-[button%tu]-(BOTTOM)-|", idx];
+      [_buttonsConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:format options:0 metrics:metrics views:views]];
+      if (idx == 0) {
+        [horizontalFormat appendFormat:@"H:|-(LEFT)-[button%tu]", idx];
+      } else {
+        [horizontalFormat appendFormat:@"[separator%tu(==SEPARATOR_WIDTH)][button%tu(==button%tu)]", idx-1, idx, idx-1];
+      }
+    }];
+    [_separatorsArray enumerateObjectsUsingBlock:^(UIImageView *obj, NSUInteger idx, BOOL *stop) {
+      obj.translatesAutoresizingMaskIntoConstraints = NO;
+      views[[NSString stringWithFormat:@"separator%tu", idx]] = obj;
+      NSString *format = [NSString stringWithFormat:@"V:|-(TOP)-[separator%tu]-(BOTTOM)-|", idx];
+      [_buttonsConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:format options:0 metrics:metrics views:views]];
+    }];
+    [horizontalFormat appendString:@"-(RIGHT)-|"];
+    [_buttonsConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:horizontalFormat options:0 metrics:metrics views:views]];
+    [self addConstraints:_buttonsConstraints];
+  }
   [super updateConstraints];
 }
 
